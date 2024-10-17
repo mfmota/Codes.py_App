@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 type ButtonProps = {
   title?: string;
@@ -17,25 +18,21 @@ export const Button = forwardRef<TouchableOpacity, ButtonProps>(
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
-    backgroundColor: '#6366F1',
-    borderRadius: 24,
-    elevation: 5,
-    flexDirection: 'row',
+    alignItems:'center',
+    alignSelf:'center',
     justifyContent: 'center',
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      height: 2,
-      width: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    borderRadius: 40,
+    backgroundColor: '#1e39be',
+    height:hp(4),
+    paddingBottom:'1%',
+    width:'35%',
+    marginTop:'8%',
+    marginBottom:'10%'
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+    color: 'white',
+    alignSelf:'center',
+    fontFamily:'Montserrat-ExtraBold',
+    fontSize:13
   },
 });

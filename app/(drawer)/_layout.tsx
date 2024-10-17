@@ -1,34 +1,61 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import {MaterialIcons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
+import customLayout from '../../components/_customLayout';
+import React from 'react';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import 'react-native-gesture-handler';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-import { HeaderButton } from '../../components/HeaderButton';
 
 const DrawerLayout = () => (
-  <Drawer>
-    <Drawer.Screen
-      name="index"
-      options={{
-        headerTitle: 'Home',
-        drawerLabel: 'Home',
-        drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />,
-      }}
-    />
+
+  <Drawer drawerContent={customLayout} 
+  screenOptions={{headerShown:false, 
+  drawerHideStatusBarOnOpen:true,
+  drawerLabelStyle:{marginLeft:-20}}}>
+
+   
     <Drawer.Screen
       name="(tabs)"
       options={{
-        headerTitle: 'Tabs',
-        drawerLabel: 'Tabs',
-        drawerIcon: ({ size, color }) => (
-          <MaterialIcons name="border-bottom" size={size} color={color} />
-        ),
-        headerRight: () => (
-          <Link href="/modal" asChild>
-            <HeaderButton />
-          </Link>
+        drawerLabel:'Calendário',
+        drawerIcon: ({}) => (
+          <AntDesign name="calendar" size={24} color="black" />
         ),
       }}
     />
+
+    <Drawer.Screen
+      name="site"
+      options={{
+        drawerLabel:'Site',
+        drawerIcon: ({}) => (
+          <AntDesign name="earth" size={24} color="black" />
+        ),
+      }}
+    />
+
+    <Drawer.Screen
+      name="contato"
+      options={{
+        title: 'Contato',
+        drawerLabel:'Contato',
+        drawerIcon: ({}) => (
+          <MaterialIcons name="support-agent" size={24} color="black" />
+        ),
+      }}
+    />
+
+    <Drawer.Screen
+      name="perfil"
+      options={{
+        title: 'perfil',
+        drawerLabel:'Perfil',
+        drawerIcon: ({}) => (
+          <FontAwesome5 name="user-edit" size={24} color="black" />
+        ),
+      }}
+  />
   </Drawer>
 );
 

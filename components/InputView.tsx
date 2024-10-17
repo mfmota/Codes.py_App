@@ -1,19 +1,20 @@
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-export const Container = ({ children }: { children: React.ReactNode }) => {
+export const InputView = ({ children }: { children: React.ReactNode }) => {
   return <View style={styles.container}>{children}</View>;
 };
 
 const styles = StyleSheet.create({
   container: {
-    height:hp(80),
-    alignItems:'center',
-    backgroundColor:'white',
-    borderRadius:20,
-    marginTop:'20%',
-    marginBottom:'12%',
-    marginHorizontal:'12%',
-    overflow:'hidden'
+    flexDirection: 'row',
+    height: hp(5),
+    width:'80%',
+    marginBottom: 12,
+    borderRadius:40,
+    backgroundColor:'#e8ebfa',  
+    paddingBottom:'2%',
+    paddingTop:'1%',
+    alignSelf:'center'
   },
 });

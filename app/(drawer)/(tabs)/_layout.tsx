@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
-import { TabBarIcon } from '~/components/TabBarIcon';
 
 export default function TabLayout() {
   return (
@@ -10,17 +10,17 @@ export default function TabLayout() {
         tabBarActiveTintColor: 'black',
       }}>
       <Tabs.Screen
-        name="index"
+        name="calendario"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Calendario',
+          tabBarIcon: ({}) =>  <AntDesign name="calendar" size={24} color="black" />,
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="prazos"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Prazos',
+          tabBarIcon: ({}) =>  <AntDesign name="clockcircleo" size={24} color="black" />,
         }}
       />
     </Tabs>
