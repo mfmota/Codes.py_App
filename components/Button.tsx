@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, } from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 type ButtonProps = {

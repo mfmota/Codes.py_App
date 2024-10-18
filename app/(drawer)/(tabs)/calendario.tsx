@@ -14,6 +14,7 @@ import { Image } from 'expo-image';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {Header} from '../../../components/header/header';
 import { Background } from '~/components/Background';
+import { ContainerDrawer } from '~/components/ContainerDrawer';
 
 export type Evento = {
     id:string;
@@ -161,7 +162,7 @@ export default function calendario (){
                
                 <Header/>
                 
-                <View style={[styles.containerTabs,{paddingBottom:bottom}]}>
+                <ContainerDrawer style={{paddingBottom:bottom}}>
 
                     <View style={[styles.boxTop,{marginTop:'-8%'}]}>
 
@@ -220,7 +221,7 @@ export default function calendario (){
                         )}
                     </View>
                    
-                </View>
+                </ContainerDrawer>
                   
             </Background>
 

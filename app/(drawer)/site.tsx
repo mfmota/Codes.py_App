@@ -1,11 +1,6 @@
-import React,{useState,useEffect} from 'react';
-import {Text,View,TextInput,ImageBackground,SafeAreaView, Pressable,TouchableOpacity,FlatList} from 'react-native';
+import React from 'react';
+import {SafeAreaView} from 'react-native';
 import {WebView} from 'react-native-webview';
-import{styles} from "../styles";
-import Fundo from '../../assets/images/fundo.png';
-import { DrawerToggleButton } from '@react-navigation/drawer';
-import { Image } from 'expo-image';
-import Logo from '../../assets/images/logoDIRPPG.png';
 import {Header} from '../../components/header/header';
 import { Background } from '~/components/Background';
 import { Container } from '~/components/Container';

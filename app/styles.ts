@@ -1,8 +1,8 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {useEffect} from 'react';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -13,9 +13,6 @@ export function useGlobalFonts() {
       'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
       'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
     });
-
-
-    const {height,width}=Dimensions.get('window')
   
     useEffect(() => {
       async function prepare() {
@@ -34,39 +31,24 @@ export function useGlobalFonts() {
 
 export const styles = StyleSheet.create({
 
-//-------------------------Containers-------------------------
-
-    
+//-------------------------Geral-------------------------
     boxTop:{
         justifyContent:'center',
-        flex:2,
         width:'100%',
-       
     },
 
     boxMiddle:{
-        flex:4,
         padding:'5%',
         justifyContent:'flex-start',
         width: '100%',
+        height:hp(40),
     },
-
     boxBottom:{
-        flex:1, 
         width: '100%',
         paddingHorizontal:30,
         marginTop:'5%',
         position:'relative',
     },
-
-    containerTabs:{
-        height:'90%',
-        marginTop:'5%',
-        marginHorizontal:'5%',
-        borderRadius:20,
-        backgroundColor:'white',
-    },
-
 
     //---------------------------------Geral------------------------------
 
@@ -87,93 +69,18 @@ export const styles = StyleSheet.create({
         marginLeft:'2%'
     },
 
-    inputView:{
-        flexDirection: 'row',
-        height: '10%',
-        width:'80%',
-        marginBottom: 12,
-        borderRadius:40,
-        backgroundColor:'#e8ebfa',  
-        paddingBottom:'2%',
-        paddingTop:'1%',
-        alignSelf:'center'
-    },
-
     iconInput:{
         alignSelf:'center',
         marginLeft:'6%'
     },
 
-   
-    //--------------------------------Nucleo--------------------------------------
-
-    label:{
-        width:'80%',
-        color:'#ddd',
-        alignSelf:'center'
-    },
-
-    box:{
-        width:'80%',
-        backgroundColor:'#e8ebfa',
-        alignSelf:'center',
-        borderRadius:40,
-        borderWidth:0,
-        maxHeight:hp(5),
-        overflow:'scroll'},
-
-    drop:{
-        overflow:'scroll',
-        width:'80%',
-        alignSelf:'center',
-        borderRadius:40,
-        top:'70%',
-        backgroundColor:'#e8ebfa',
-        zIndex:999,
-        position: 'absolute',
-        fontFamily:'Montserrat-Regular'},
-
 //--------------------------------Index-----------------------------------
-
-    boxTopLogin:{
-        justifyContent:'center',
-        height:hp(20),
-        width:'100%',
-    },
-
-    boxMiddleLogin:{
-        height:hp(25),
-        padding:'5%',
-        justifyContent:'flex-start',
-        width: '100%',
-    },
-
-    boxBottomLogin:{
-        height:hp(20) ,
-        width: '100%',
-        paddingHorizontal:30,
-        position:'relative',
-    },
-
-    boxLogo:{
-        height:hp(20) ,
-        width: '100%',
-        position:'relative',
-    },
-
-    logo:{
-        width:'55%',
-        height:'55%',
-        resizeMode:'contain',
-        alignSelf:'center',
-        marginTop:'5%'
-    },
-
+    
     txtLogin:{
         fontSize:20,
         marginBottom:'10%',
         alignSelf:'center',
-         fontFamily: 'Montserrat-ExtraBold'
+        fontFamily: 'Montserrat-ExtraBold'
      },
  
      txtSenha:{
@@ -185,60 +92,6 @@ export const styles = StyleSheet.create({
          fontFamily:'Montserrat-ExtraBold'
      },
  
-     txtPergunta:{
-         fontSize:10,
-         justifyContent:'flex-start',
-         marginLeft:'20%',
-         fontFamily:'Montserrat-Regular'
-     },
- 
-     txtResposta:{
-         fontSize:10,
-        justifyContent:'flex-end',
-        textDecorationLine:'underline',
-        fontFamily:'Montserrat-ExtraBold'
-     },
-
-
-
-//-------------------------------Cadastro------------------------------------------
-
-    boxTopCadastro:{
-        justifyContent:'center',
-        height:hp(10),
-        width:'100%',
-        paddingTop:'5%'
-    },
-
-    boxMiddleCadastro:{
-        height:hp(40),
-        paddingHorizontal:'5%',
-        paddingTop:'10%',
-        justifyContent:'flex-start',
-        width: '100%',
-        overflow:'scroll'
-    },
-
-    boxBottomCadastro:{
-        height:hp(15) ,
-        width: '100%',
-        paddingHorizontal:30,
-        position:'relative',
-    },
-
-    boxLogoCadastro:{
-        height:hp(20) ,
-        width: '100%',
-        position:'relative',
-    },
-
-    cadastro:{
-        fontSize:20,
-        alignSelf: 'center',
-        fontFamily: 'Montserrat-ExtraBold'
-     },
-
-    
  //---------------------------------Redef Senha--------------------------------------------------------
 
      txt1:{
@@ -252,7 +105,7 @@ export const styles = StyleSheet.create({
      txt2:{
         fontFamily:'Montserrat-Regular',
         fontSize:10,
-        marginBottom:'5%',
+        marginBottom:'10%',
         alignSelf:'center',
      },
 
@@ -397,19 +250,4 @@ export const styles = StyleSheet.create({
     },
 
 
-
-//--------------------------------PERFIL--------------------------------
-
-inputViewPerfil:{
-    flexDirection: 'row',
-    height: hp(5),
-    width:'80%',
-    marginBottom:'5%',
-    borderRadius:40,
-    backgroundColor:'#e8ebfa',  
-    paddingBottom:'2%',
-    paddingTop:'1%',
-    alignSelf:'center'
-    
-},
 })

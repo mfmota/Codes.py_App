@@ -1,17 +1,14 @@
 import React,{useState,useEffect} from 'react';
-import {Text,View,ImageBackground,SafeAreaView, Pressable,TouchableOpacity,FlatList} from 'react-native';
+import {Text,View,SafeAreaView,TouchableOpacity,FlatList} from 'react-native';
 import{styles,useGlobalFonts} from "../../styles";
 import{db} from '../../../utils/firebase';
-import Fundo from "../../../assets/images/fundo.png";
-import Logo from "../../../assets/images/logoDIRPPG.png";
 import { ref,onValue } from 'firebase/database';
 import { differenceInDays, compareAsc } from 'date-fns';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
-import { DrawerToggleButton } from '@react-navigation/drawer';
-import { Image } from 'expo-image'
 import {Header} from '../../../components/header/header';
 import { Background } from '~/components/Background';
+import { ContainerDrawer } from '~/components/ContainerDrawer';
 
 export type Evento = {
     id:string;
@@ -146,7 +143,7 @@ export default function prazos (){
         <SafeAreaView>
             <Background>
                 <Header/>    
-                <View style={styles.containerTabs}>
+                <ContainerDrawer>
 
                     <Text style={[styles.prazosTitle,{marginTop:'10%'}]}>Atenção para os eventos </Text>
                     <Text style={styles.prazosTitle}>que se aproximam </Text>
@@ -159,7 +156,7 @@ export default function prazos (){
                                 keyExtractor={(item) => item.id}
                             />
                     </View>        
-                </View>               
+                </ContainerDrawer>              
             </Background>
         </SafeAreaView>
 

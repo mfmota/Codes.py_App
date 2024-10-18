@@ -1,15 +1,12 @@
 import React from 'react';
-import {Text,View,ImageBackground,SafeAreaView, Pressable, Linking,Platform} from 'react-native'
-import { Image } from 'expo-image'
+import {Text,View,SafeAreaView, Pressable, Linking,Platform} from 'react-native'
 import{styles,useGlobalFonts} from "../styles"
-import Fundo from '../../assets/images/fundo.png'
 import Foundation from '@expo/vector-icons/Foundation';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { DrawerToggleButton } from '@react-navigation/drawer';
-import Logo from '../../assets/images/logoDIRPPG.png';
 import {Header} from '../../components/header/header';
 import { Background } from '~/components/Background';
 import { Container } from '~/components/Container';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export default function prazos (){ 
     const fontsLoaded = useGlobalFonts();
 
@@ -40,22 +37,21 @@ export default function prazos (){
         <SafeAreaView>
             <Background>
                 <Header/>
+
                 <Container>
 
-                   <View style={styles.boxTopCadastro}>
+                   <View style={[styles.boxTop,{height:hp(13),paddingTop:'5%'}]}>
                         <Text style={[styles.title]}>Contato</Text>
                     </View>    
 
                     <View style={styles.boxDuvidas} >
-
                         <View style={styles.boxInfoDuvidas}>
                             <Pressable style={{marginRight:20}}
                                 onPress={openEmail}>
                                 <MaterialIcons name="email" size={24} color="black" />
                             </Pressable>
                     
-                            <Text style={styles.txtContato}>dirppg-ct@utfpr.edu.br </Text>
-                                
+                            <Text style={styles.txtContato}>dirppg-ct@utfpr.edu.br </Text>  
                         </View>
                             
                         <View style={styles.boxInfoDuvidas}>

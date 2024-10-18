@@ -1,20 +1,19 @@
-import React from 'react';
-import {useState} from "react"
-import {Text,View,TextInput,ImageBackground,SafeAreaView, Pressable} from 'react-native'
-import{styles} from "./styles"
-import { useGlobalFonts } from './styles';
+import React, {useState} from 'react';
+import {Text,View,TextInput,SafeAreaView, Pressable} from 'react-native'
+import{styles,useGlobalFonts } from "./styles"
 import{auth} from '../utils/firebase'
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {signInWithEmailAndPassword } from 'firebase/auth';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useRouter} from 'expo-router'
-import Logo from 'assets/images/logoDIRPPG.png'
-import Fundo from 'assets/images/fundo.png'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Fontisto from '@expo/vector-icons/Fontisto';
-import { Image } from 'expo-image';
 import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
 import { Background } from '~/components/Background';
 import { InputView } from '~/components/InputView';
+import { Footer } from '~/components/footer/footer';
+import TXTOptions from '~/components/TXTOption';
+
 
 export default function Login(){
 
@@ -38,7 +37,7 @@ export default function Login(){
             
         }
 
-    function novoUsuario(){
+    function cadastro(){
         router.replace('/cadastro');
     }    
 
@@ -53,20 +52,14 @@ export default function Login(){
     return(
         <SafeAreaView>
             <Background>
-                
                 <Container>
-
-                    <View style={styles.boxTopLogin}>
-        
+                    <View style={[styles.boxTop,{ height:hp(20),}]}>
                         <Text style={styles.title} >DIRPPG-CT</Text>  
                         <Text style={styles.subTitle}>Diretoria de Pesquisa e Pós-Graduação</Text>             
-                        
                     </View>
 
-                    <View style={styles.boxMiddleLogin}>
-
-                        <Text style={styles.txtLogin}>Login</Text> 
-                        
+                    <View style={[styles.boxMiddle,{height:hp(25)}]}>
+                        <Text style={styles.txtLogin}>Login</Text>  
                         <InputView >
                             <MaterialIcons style={styles.iconInput}name="email" size={18} color="black" />
                             <TextInput 
@@ -78,7 +71,6 @@ export default function Login(){
                             onChangeText={setEmail}
                             />
                         </InputView>
-                        
 
                         <InputView>
                             <Fontisto style={styles.iconInput}name="locked" size={16} color="black" />
@@ -90,29 +82,28 @@ export default function Login(){
                                 onChangeText={setSenha}
                             />
                         </InputView>
+
                         <Pressable onPress={redefinirSenha}>
                             <Text style={styles.txtSenha}>Esqueci minha senha</Text>
                         </Pressable>   
-                        
+
                     </View>
 
-                    <View style={styles.boxBottomLogin}>
-                    
-                    <Button
+                    <View style={[styles.boxBottom,{height:hp(20)}]}>
+                        <Button
                         title='Entrar'
                         onPress={userLogin}
-                    />
-                            
-                            <Pressable onPress={novoUsuario} style={{flexDirection:'row'}}>
-                                <Text style={styles.txtPergunta}>Não tem uma conta? </Text>
-                                <Text style={styles.txtResposta}> Cadastre-se</Text>
-                            </Pressable>   
+                        />
+
+                       <TXTOptions
+                       title1='Não tem uma conta?'
+                       title2='Cadastre-se'
+                       onPress={cadastro}
+                       />
+
                     </View>
 
-                    <View style={styles.boxLogo}>
-                        <Image source={Logo} style={styles.logo}></Image>
-                    </View>
-                    
+                   <Footer/>
                 </Container>   
             </Background>
         </SafeAreaView>
