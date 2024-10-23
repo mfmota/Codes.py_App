@@ -4,11 +4,11 @@ import csv
 
 # Credenciais do banco de dados
 db_config = {
-    'host': 'localhost',
-    'dbname': 'utfpr_editais',  # Nome do banco de dados
-    'user': 'postgres',
-    'password': 'leesin0704',
-    'port': '5433'  # Porta do PostgreSQL
+    'host': '172.30.60.55',
+    'dbname': 'dbserver',  # Nome do banco de dados
+    'user': 'dirppgApp',
+    'password': 'dirppgct',
+    'port': '3306'  # Porta do MySQL
 }
 
 def atualizar_banco_de_dados(diretorio_csv):
@@ -55,7 +55,7 @@ def atualizar_banco_de_dados(diretorio_csv):
             conn.close()
 
 # Defina o diretório onde os arquivos CSV estão localizados
-diretorio_csv = r"C:\Users\gabri\PycharmProjects\DIRPPG\Programas"
+diretorio_csv = r"C:\Users\gabri\PycharmProjects\DIRPPG\Programas\scripts"
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
