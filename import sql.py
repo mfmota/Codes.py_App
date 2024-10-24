@@ -1,4 +1,4 @@
-import psycopg2
+import mysql.connector
 import os
 import csv
 
@@ -43,7 +43,7 @@ def atualizar_banco_de_dados(diretorio_csv):
         # Commit das transações
         conn.commit()
 
-    except psycopg2.OperationalError as e:
+    except mysql.connector.Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
     except Exception as e:
         print(f"Erro ao atualizar o banco de dados: {e}")
@@ -55,7 +55,7 @@ def atualizar_banco_de_dados(diretorio_csv):
             conn.close()
 
 # Defina o diretório onde os arquivos CSV estão localizados
-diretorio_csv = r"C:\Users\gabri\PycharmProjects\DIRPPG\Programas\scripts"
+diretorio_csv = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda\scripts"
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
