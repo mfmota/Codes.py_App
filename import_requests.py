@@ -52,7 +52,8 @@ if response.status_code == 200:
                     print(f"Falha ao acessar o edital principal: {link_edital_principal}")
                     editais_data.append([titulo, link_edital_principal, 'Link final não encontrado', 'Falha ao acessar o edital principal', '', ''])
 
-    output_filename = 'editais_utfpr_cronograma.csv'
+    output_directory = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda\scripts"
+    output_filename = os.path.join(output_directory, 'editais_utfpr_cronograma.csv')
 
     file_exists = os.path.isfile(output_filename)
 

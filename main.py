@@ -18,3 +18,16 @@ def run_script(script_name):
 if __name__ == "__main__":
     for script in scripts:
         run_script(script)
+
+    #Importar e rodar o import import_sql.py no final
+    try:
+        sql_module = importlib.import_module('sql')
+
+        if hasattr(sql_module, 'main'):
+            print("Executando import_sql.py")
+            sql_module.main()
+
+        else:
+            print("import_sql.py não contém uma função main() para executar")
+    except Exception as e:
+        print(f"Erro ao executar importação dos dados para o SQL: {e}")
