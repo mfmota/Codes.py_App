@@ -4,11 +4,11 @@ import csv
 
 # Credenciais do banco de dados
 db_config = {
-    'host': '172.30.60.55',
-    'dbname': 'dbserver',  # Nome do banco de dados
-    'user': 'dirppgApp',
-    'password': 'dirppgct',
-    'port': '3306'  # Porta do MySQL
+    'host': '127.0.0.1',
+    'database': 'teste',  # Nome do banco de dados
+    'user': 'root',
+    'password': 'N18Ut20YkU21@',
+    'port': 3306  # Porta do MySQL
 }
 
 def atualizar_banco_de_dados(diretorio_csv):
@@ -16,7 +16,7 @@ def atualizar_banco_de_dados(diretorio_csv):
     cursor = None
     try:
         # Conectar ao banco de dados
-        conn = psycopg2.connect(**db_config)
+        conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
         # Loop pelos arquivos CSV no diretório especificado
@@ -55,7 +55,7 @@ def atualizar_banco_de_dados(diretorio_csv):
             conn.close()
 
 # Defina o diretório onde os arquivos CSV estão localizados
-diretorio_csv = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda\scripts"
+diretorio_csv = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda"
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
