@@ -56,7 +56,7 @@ def atualizar_banco_de_dados(diretorio_csv):
             print("Conexão ao bd fechada")
 
 # Defina o diretório onde os arquivos CSV estão localizados
-diretorio_csv = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda"
+diretorio_csv = r"/home/appdirppg/Documentos/GitHub/dirppg-app-agenda"
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
