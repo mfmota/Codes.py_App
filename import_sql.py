@@ -1,13 +1,13 @@
-import mysql.connector
+import pymysql
 import os
 import csv
 
 # Credenciais do banco de dados
 db_config = {
-    'host': '127.0.0.1',
-    'database': 'teste',  # Nome do banco de dados
-    'user': 'root',
-    'password': 'N18Ut20YkU21@',
+    'host': '172.30.60.59',
+    'database': 'dirppg',  # Nome do banco de dados
+    'user': 'dirppgApp',
+    'password': 'dirppgct',
     'port': 3306  # Porta do MySQL
 }
 
@@ -16,7 +16,7 @@ def atualizar_banco_de_dados(diretorio_csv):
     cursor = None
     try:
         # Conectar ao banco de dados
-        conn = mysql.connector.connect(**db_config)
+        conn = pymysql.connect(**db_config)
         cursor = conn.cursor()
 
         # Loop pelos arquivos CSV no diretório especificado
@@ -31,19 +31,19 @@ def atualizar_banco_de_dados(diretorio_csv):
                         query = """
                         INSERT INTO editais (titulo, link_1, link_2, descricao, atividade, periodo)
                         VALUES (%s, %s, %s, %s, %s, %s)
-                        ON CONFLICT (titulo) DO UPDATE SET 
-                            link_1 = EXCLUDED.link_1,
-                            link_2 = EXCLUDED.link_2,
-                            descricao = EXCLUDED.descricao,
-                            atividade = EXCLUDED.atividade,
-                            periodo = EXCLUDED.periodo;
+                        ON DUPLICATE KEY UPDATE 
+                            link_1 = VALUES(link_1),
+                            link_2 = VALUES(link_2),
+                            descricao = VALUES(descricao),
+                            atividade = VALUES(atividade),
+                            periodo = VALUES(periodo);
                         """
                         cursor.execute(query, row)
 
         # Commit das transações
         conn.commit()
 
-    except mysql.connector.Error as e:
+    except pymysql.Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
     except Exception as e:
         print(f"Erro ao atualizar o banco de dados: {e}")
@@ -53,6 +53,7 @@ def atualizar_banco_de_dados(diretorio_csv):
             cursor.close()
         if conn is not None:
             conn.close()
+            print("Conexão ao bd fechada")
 
 # Defina o diretório onde os arquivos CSV estão localizados
 diretorio_csv = r"C:\Users\gabri\OneDrive\Hiromiti-kun\Documentos\GitHub\dirppg-app-agenda"
