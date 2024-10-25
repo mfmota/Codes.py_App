@@ -11,6 +11,21 @@ db_config = {
     'port': 3306  # Porta do MySQL
 }
 
+def criar_tabela(cursor, nome_tabela):
+    # Cria a tabela se não existir
+    create_table_query = f"""
+    CREATE TABLE IF NOT EXISTS {nome_tabela} (
+        titulo VARCHAR(255),
+        link_1 VARCHAR(255),
+        link_2 VARCHAR(255),
+        descricao TEXT,
+        atividade TEXT,
+        periodo TEXT,
+        PRIMARY KEY (titulo)  -- Supondo que o título é único
+    );
+    """
+    cursor.execute(create_table_query)
+
 def atualizar_banco_de_dados(diretorio_csv):
     conn = None
     cursor = None
