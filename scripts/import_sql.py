@@ -1,13 +1,12 @@
 import pymysql
 import os
 import csv
-from pathlib import Path
 
 # Credenciais do banco de dados
 db_config = {
-    'host': '172.30.60.55',
+    'host': '172.30.60.59',
     'database': 'dirppg',  # Nome do banco de dados
-    'user': 'remoteAcess',
+    'user': 'dirppgApp',
     'password': 'dirppgct',
     'port': 3306  # Porta do MySQL
 }
@@ -71,10 +70,8 @@ def atualizar_banco_de_dados(diretorio_csv):
             conn.close()
             print("Conexão ao bd fechada")
 
-#diretório base
-BASE_DIR = Path(__file__).parent.parent
-
-diretorio_csv = BASE_DIR /'scripts' / 'arquivos_csv'
+# Defina o diretório onde os arquivos CSV estão localizados
+diretorio_csv = r"/home/appdirppg/Documentos/GitHub/dirppg-app-agenda"
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
