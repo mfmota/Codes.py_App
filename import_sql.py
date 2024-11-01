@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Credenciais do banco de dados
 db_config = {
-    'host': '172.30.60.55',
+    'host': '172.30.60.1',
     'database': 'dirppg',  # Nome do banco de dados
     'user': 'remoteAcess',
     'password': 'dirppgct',
@@ -71,10 +71,9 @@ def atualizar_banco_de_dados(diretorio_csv):
             conn.close()
             print("Conexão ao bd fechada")
 
-#diretório base
+# Defina o diretório onde os arquivos CSV estão localizados
 BASE_DIR = Path(__file__).parent.parent
-
-diretorio_csv = BASE_DIR /'scripts' / 'arquivos_csv'
+diretorio_csv = BASE_DIR
 
 # Chama a função para atualizar o banco de dados
 atualizar_banco_de_dados(diretorio_csv)
