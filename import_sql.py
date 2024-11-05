@@ -1,79 +1,74 @@
-import pymysql
+from wsgiref.util import request_uri
+import requests
 import os
 import csv
 from pathlib import Path
 
-# Credenciais do banco de dados
-db_config = {
-    'host': '172.30.60.1',
-    'database': 'dirppg',  # Nome do banco de dados
-    'user': 'remoteAcess',
-    'password': 'dirppgct',
-    'port': 3306  # Porta do MySQL
-}
+API_URL_EDITAIS = "http://172.30.60.55:3030/editais"
+API_URL_ASSOCIACAO = "http://172.30.60.55:3030/nucleos_editais"
+API_URL_NUCLEOS = "http://172.30.60.55:3030/nucleos/:nome"
 
-def criar_tabela(cursor, nome_tabela):
-    # Cria a tabela se não existir
-    create_table_query = f"""
-    CREATE TABLE IF NOT EXISTS {nome_tabela} (
-        titulo VARCHAR(255),
-        link_1 VARCHAR(255),
-        link_2 VARCHAR(255),
-        descricao TEXT,
-        atividade TEXT,
-        periodo TEXT,
-        PRIMARY KEY (titulo)  -- Supondo que o título é único
-    );
-    """
-    cursor.execute(create_table_query)
+diretorio_csv = Path('csv') 
 
-def atualizar_banco_de_dados(diretorio_csv):
-    conn = None
-    cursor = None
-    try:
-        # Conectar ao banco de dados
-        conn = pymysql.connect(**db_config)
-        cursor = conn.cursor()
+def atualizar_banco_de_dados():
+    for filename in os.listdir(diretorio_csv):
+        if filename.endswith('.csv'):
 
-        # Loop pelos arquivos CSV no diretório especificado
-        for filename in os.listdir(diretorio_csv):
-            if filename.endswith('.csv'):
-                with open(os.path.join(diretorio_csv, filename), mode='r', encoding='utf-8') as csv_file:
-                    reader = csv.reader(csv_file, delimiter='¢')
-                    next(reader)  # Ignora o cabeçalho
+            arquivo_path = Path(filename)
+            nucleo_nome = arquivo_path.stem
 
-                    for row in reader:
-                        # Preparar a consulta de inserção
-                        query = """
-                        INSERT INTO editais (titulo, link_1, link_2, descricao, atividade, periodo)
-                        VALUES (%s, %s, %s, %s, %s, %s)
-                        ON DUPLICATE KEY UPDATE 
-                            link_1 = VALUES(link_1),
-                            link_2 = VALUES(link_2),
-                            descricao = VALUES(descricao),
-                            atividade = VALUES(atividade),
-                            periodo = VALUES(periodo);
-                        """
-                        cursor.execute(query, row)
+            with open(os.path.join(diretorio_csv, filename), mode='r', encoding='utf-8') as csv_file:
+                reader = csv.reader(csv_file, delimiter='¢')
+                next(reader)  # Ignora o cabeçalho
 
-        # Commit das transações
-        conn.commit()
+                for row in reader:
+                    # Preparar os dados do edital
+                    dados = {
+                        "nucleo": nucleo_nome,
+                        "link_1": row[1],
+                        "link_2": row[2],
+                        "descricao": row[3],
+                        "atividade": row[4],
+                        "periodo": row[5],
+                        "titulo": row[0],
+                    }
+                    print(f"Dados a serem enviados: {dados}")
 
-    except pymysql.Error as e:
-        print(f"Erro ao conectar ao banco de dados: {e}")
-    except Exception as e:
-        print(f"Erro ao atualizar o banco de dados: {e}")
-    finally:
-        # Fechar o cursor e a conexão se eles foram abertos
-        if cursor is not None:
-            cursor.close()
-        if conn is not None:
-            conn.close()
-            print("Conexão ao bd fechada")
+                    try:
+                        edital = requests.post(API_URL_EDITAIS, json=dados)
 
-# Defina o diretório onde os arquivos CSV estão localizados
-BASE_DIR = Path(__file__).parent.parent
-diretorio_csv = BASE_DIR
+                        if edital.status_code == 201:
+                            print(f"Edital cadastrado: {dados['titulo']}")
 
-# Chama a função para atualizar o banco de dados
-atualizar_banco_de_dados(diretorio_csv)
+                            nucleo = requests.get(API_URL_NUCLEOS.replace(':nome', nucleo_nome))
+                            nucleo_data = nucleo.json()
+            
+                            if 'nucleo' in nucleo_data:
+                                nucleo_id = nucleo_data['nucleo']['id']  # Acessa o ID do núcleo
+                                edital_data = edital.json()
+                                edital_id = edital_data['dadosEditais']['id']
+
+                                associacao_dados = {
+                                    "nucleo_id": nucleo_id,
+                                    "edital_id": edital_id
+                                }
+                                print(f"ID a serem enviados: {associacao_dados}")
+
+                                response_associacao = requests.post(API_URL_ASSOCIACAO, json=associacao_dados)
+
+                                if response_associacao.status_code == 201:
+                                    print(f"Associação criada para o núcleo: {nucleo_nome}")
+                                else:
+                                    print(f"Erro ao criar associação: {response_associacao.status_code} - {response_associacao.text}")
+                            else:
+                                print(f"Núcleo não encontrado: {nucleo_nome}")
+                        else:
+                            print(f"Erro ao cadastrar edital: {edital.status_code} - {edital.text}")
+                    except requests.RequestException as e:
+                        print(f"Erro de conexão com a API: {e}")
+
+
+def main():
+    atualizar_banco_de_dados()
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,7 @@
 import importlib
 import sys
 
-scripts = ["CPGEI", "PPGA", "PPGCA", "PPGTA", "PPGEB", "PPGEC", "PPGEF", "PPGEL", "PPGEM", "PPGFA", "PPGPGP", "PPGQ", "PPGSAU", "PPGSE", "PPGTE", "PROFMAT", "import requests"]
+scripts = ["CPGEI", "PPGA", "PPGCA", "PPGTA", "PPGEB", "PPGEC", "PPGEF", "PPGEL", "PPGEM", "PPGFA", "PPGPGP", "PPGQ", "PPGSAU", "PPGSE", "PPGTE", "PROFMAT","import_sql"]
 
 def run_script(script_name):
     try:
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     #Importar e rodar o import import_sql.py no final
     try:
-        sql_module = importlib.import_module('sql')
+        sql_module = importlib.import_module('import_sql')
 
         if hasattr(sql_module, 'main'):
             print("Executando import_sql.py")

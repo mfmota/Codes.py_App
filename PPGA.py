@@ -5,6 +5,7 @@ import os
 import time
 import urllib3
 import re
+from pathlib import Path
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -51,8 +52,10 @@ if response.status_code == 200:
                 else:
                     print(f"Falha ao acessar o edital principal: {link_edital_principal}")
                     editais_data.append([titulo, link_edital_principal, 'Link final não encontrado', 'Falha ao acessar o edital principal', '', ''])
+    
 
-    output_filename = 'PPGA_editais_utfpr.csv'
+    diretorio_csv = Path('csv') 
+    output_filename = os.path.join(diretorio_csv, 'PPGA.csv')
 
     file_exists = os.path.isfile(output_filename)
 

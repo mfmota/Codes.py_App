@@ -4,8 +4,7 @@ import csv
 import os
 import time
 import urllib3
-import re
-
+from pathlib import Path
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 url_base = "https://www.utfpr.edu.br"
@@ -53,9 +52,9 @@ if response.status_code == 200:
                     editais_data.append([titulo, link_edital_principal, 'Link final não encontrado', 'Falha ao acessar o edital principal', '', ''])
 
     #diretório base
-    BASE_DIR = Path(__file__).parent.parent
-    output_directory = BASE_DIR /'scripts' / 'arquivos_csv'
-    output_filename = os.path.join(output_directory, 'editais_utfpr_cronograma.csv')
+
+    diretorio_csv = Path('csv') 
+    output_filename = os.path.join(diretorio_csv, 'editais.csv')
 
     file_exists = os.path.isfile(output_filename)
 
