@@ -22,7 +22,6 @@ def atualizar_banco_de_dados():
                 next(reader)  # Ignora o cabeçalho
 
                 for row in reader:
-                    # Preparar os dados do edital
                     dados = {
                         "nucleo": nucleo_nome,
                         "link_1": row[1],
@@ -44,7 +43,7 @@ def atualizar_banco_de_dados():
                             nucleo_data = nucleo.json()
             
                             if 'nucleo' in nucleo_data:
-                                nucleo_id = nucleo_data['nucleo']['id']  # Acessa o ID do núcleo
+                                nucleo_id = nucleo_data['nucleo']['id']
                                 edital_data = edital.json()
                                 edital_id = edital_data['dadosEditais']['id']
 
@@ -70,5 +69,3 @@ def atualizar_banco_de_dados():
 
 def main():
     atualizar_banco_de_dados()
-if __name__ == "__main__":
-    main()
