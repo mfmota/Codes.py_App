@@ -18,8 +18,6 @@ def atualizar_banco_de_dados():
             with open(diretorio_csv / filename, mode='r', encoding='utf-8-sig') as csv_file:
                 reader = csv.DictReader(csv_file, delimiter='¢')
 
-                print("Fieldnames:", reader.fieldnames)
-
                 for row in reader:
                     print("Row content:", row) 
                     dados = {
@@ -29,8 +27,6 @@ def atualizar_banco_de_dados():
                         "link2": row.get('Link 2', '').strip(),
                         "descricao": row.get('Descrição', '').strip(),
                     }
-
-                    print(f"Parsed data: {dados}")
 
                     try:
                         edital = requests.post(API_URL_EDITAIS, json=dados)

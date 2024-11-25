@@ -2,14 +2,18 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 import os
+import re
 from pathlib import Path
 import urllib3
+from datetime import datetime
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
     url = f"{url_base}/{nucleo}/editais"
     response = requests.get(url, verify=False)
+    ano = datetime.now().year
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -20,13 +24,27 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
             titulo_tag = listing.find('h3', class_='text-dsGray-900')
             if titulo_tag:
                 titulo = titulo_tag.get_text(strip=True)
+
+                if ano:
+                    data_publicacao_tag = listing.find(string=re.compile(r"Curitiba, \d{1,2} de \w+ de \d{4}"))
+                    if data_publicacao_tag:
+                        data_publicacao = data_publicacao_tag.strip()
+                        match = re.search(r"(\d{4})", data_publicacao)
+                        if match:
+                            ano_data_publicacao = match.group(1)
+                            if ano and ano != int(ano_data_publicacao):
+                                continue 
+            
+                descricao_tag = titulo_tag.find_next_sibling()
+                descricao = descricao_tag.get_text(strip=True) if descricao_tag else "Descrição resumida não encontrada"
+
                 link_tag = listing.find('a')
                 if link_tag:
                     link_edital_principal = url_base + link_tag['href']
                     response_edital = requests.get(link_edital_principal, verify=False)
                     if response_edital.status_code == 200:
                         soup_edital = BeautifulSoup(response_edital.content, 'html.parser')
-                        descricao = soup_edital.find('div', class_='entry-content').get_text(strip=True) if soup_edital.find('div', class_='entry-content') else 'Descrição não encontrada'
+
                         link_final_tag = soup_edital.find('a', class_="text-[#0169CD]")
                         link_edital_final = link_final_tag['href'] if link_final_tag else 'Link final não encontrado'
 
