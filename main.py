@@ -1,33 +1,29 @@
-import importlib
-import sys
+from extrair_editais import extrair_editais
+
+url_base = "https://www.utfpr.edu.br/cursos/coordenacoes/stricto-sensu"
 
 scripts = ["CPGEI", "PPGA", "PPGCA", "PPGTA", "PPGEB", "PPGEC", "PPGEF", "PPGEL", "PPGEM", "PPGFA", "PPGPGP", "PPGQ", "PPGSAU", "PPGSE", "PPGTE", "PROFMAT","import_sql"]
 
-def run_script(script_name):
-    try:
-        module = importlib.import_module(script_name)
+def main():
+    for script in scripts:
+        nucleo = f"{script.lower()}-ct"
+        csv_filename = f"{script}.csv"
 
-        if hasattr(module, 'main'):
-            print(f"Executando {script_name}.py")
-            module.main()
-        else:
-            print(f"{script_name}.py não contém uma função main() para executar.")
-    except Exception as e:
-        print(f"Erro ao executar {script_name}.py: {e}")
+        try:
+            print(f"Executando extração para o núcleo: {nucleo}, arquivo: {csv_filename}")
+            extrair_editais(url_base, nucleo, csv_filename)
+        except Exception as e:
+            print(f"Erro ao processar o núcleo {nucleo}: {e}")
+
+        try:
+            import import_sql
+            if hasattr(import_sql, 'main'):
+                print("Executando import_sql.py")
+                import_sql.main()
+            else:
+                print("import_sql.py não contém uma função main() para executar")
+        except Exception as e:
+            print(f"Erro ao executar importação dos dados para o SQL: {e}")
 
 if __name__ == "__main__":
-    for script in scripts:
-        run_script(script)
-
-    #Importar e rodar o import import_sql.py no final
-    try:
-        sql_module = importlib.import_module('import_sql')
-
-        if hasattr(sql_module, 'main'):
-            print("Executando import_sql.py")
-            sql_module.main()
-
-        else:
-            print("import_sql.py não contém uma função main() para executar")
-    except Exception as e:
-        print(f"Erro ao executar importação dos dados para o SQL: {e}")
+    main()

@@ -1,9 +1,7 @@
-from wsgiref.util import request_uri
 import requests
 import os
 import csv
 from pathlib import Path
-from csv import DictReader
 
 API_URL_EDITAIS = "http://172.30.60.55:3030/editais"
 API_URL_ASSOCIACAO = "http://172.30.60.55:3030/nucleos_editais"
@@ -32,8 +30,6 @@ def atualizar_banco_de_dados():
                         "descricao": row.get('Descrição', '').strip(),
                     }
 
-
-                    # Debugging output to verify data before sending
                     print(f"Parsed data: {dados}")
 
                     try:
@@ -66,10 +62,6 @@ def atualizar_banco_de_dados():
                             print(f"Erro ao cadastrar edital: {edital.status_code} - {edital.text}")
                     except requests.RequestException as e:
                         print(f"Erro de conexão com a API: {e}")
-
-
-
-
 
 def main():
     atualizar_banco_de_dados()
