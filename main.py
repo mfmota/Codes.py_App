@@ -2,7 +2,7 @@ from extrair_editais import extrair_editais
 
 url_base = "https://www.utfpr.edu.br/cursos/coordenacoes/stricto-sensu"
 
-scripts = ["CPGEI", "PPGA", "PPGCA", "PPGTA", "PPGEB", "PPGEC", "PPGEF", "PPGEL", "PPGEM", "PPGFA", "PPGPGP", "PPGQ", "PPGSAU", "PPGSE", "PPGTE", "PROFMAT","import_sql"]
+scripts = ["CPGEI", "PPGA", "PPGCA", "PPGEB", "PPGEC", "PPGEF", "PPGEL", "PPGEM", "PPGFA", "PPGPGP", "PPGQ", "PPGSAU", "PPGSE", "PPGTE", "PROFMAT","import_sql"]
 
 def main():
     for script in scripts:
