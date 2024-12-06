@@ -1,15 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
-import os
 import re
 from pathlib import Path
 import urllib3
 from datetime import datetime
+from import_sql import atualizar_banco_de_dados, verificar_edital_existente
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
+def extrair_editais(url_base: str, nucleo: str,script):
     url = f"{url_base}/{nucleo}/editais"
     response = requests.get(url, verify=False)
     ano_atual = datetime.now().year
@@ -17,7 +16,6 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
-        editais_data = []
         listings = soup.find_all('div', class_='listing-item')
 
         for listing in listings:
@@ -38,6 +36,11 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
 
                 if link_tag:
                     link_edital_principal = url_base + link_tag['href']
+
+                    if verificar_edital_existente(titulo):
+                        print(f"Edital já existe: {titulo}")
+                        continue
+
                     response_edital = requests.get(link_edital_principal, verify=False)
 
                     if response_edital.status_code == 200:
@@ -63,6 +66,14 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
 
                         if link_edital_final.startswith('/'):
                             link_edital_final = "https://sei.utfpr.edu.br" + link_edital_final
+                        
+                        dados_edital = {
+                            "nucleo":script,
+                            "titulo":titulo,
+                            "descricao":descricao,
+                            "link1":link_edital_principal,
+                            "link2":link_edital_final
+                        }
 
                         response_edital_final = requests.get(link_edital_final, verify=False)
 
@@ -73,6 +84,8 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
                             cronograma_regex = re.compile(r"cronograma", re.IGNORECASE)
                             paragrafos_edital = soup_edital_final.find_all('p')
 
+                            descricao_prazos_concatenados = []
+                        
                             for p in paragrafos_edital:
                                 texto = p.get_text(strip=True)
                                 cronograma_match = cronograma_regex.search(texto)
@@ -91,7 +104,7 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
                                         if not any(palavra in coluna for palavra in palavras_chave for coluna in colunas_primeira_linha):
                                             continue
                                         
-                                        descricao_prazos_concatenados = []
+                                        
                                         if len(linhas) > 1:
                                             primeira_coluna_segunda_linha = linhas[1].find_all('td')[0].get_text(strip=True)
                                             try:
@@ -111,39 +124,17 @@ def extrair_editais(url_base: str, nucleo: str, csv_filename: str):
                                                 descricao_tabela = colunas[0].get_text(strip=True)
                                                 data_prazo = colunas[1].get_text(strip=True)
                                                 descricao_prazos_concatenados.append(f"{descricao_tabela}¢{data_prazo}")
+                            if descricao_prazos_concatenados:
+                                atualizar_banco_de_dados(dados_edital,descricao_prazos_concatenados) 
+                            else:
+                                atualizar_banco_de_dados(dados_edital,prazos=None) 
 
-                                        if descricao_prazos_concatenados:
-                                            descricao_pronta = "¢".join(descricao_prazos_concatenados)
-                                            editais_data.append([titulo, link_edital_principal, link_edital_final, descricao, descricao_pronta])       
                         else:
                             print(f"Falha ao acessar o link final do edital: {link_edital_final}")
-                            editais_data.append([titulo, link_edital_principal, link_edital_final, descricao,'Não encontrado'])
-
+                            
                     else:
                         print(f"Falha ao acessar o edital principal: {link_edital_principal}")
-                        editais_data.append([titulo, link_edital_principal, 'Link final não encontrado', 'Falha ao acessar o edital principal', "", ""])
 
-        diretorio_csv = Path('csv')
-        diretorio_csv.mkdir(exist_ok=True)
-        output_filename = os.path.join(diretorio_csv, csv_filename)
-        file_exists = os.path.isfile(output_filename)
-
-        with open(output_filename, mode='a', newline='', encoding='utf-8-sig') as file:
-            writer = csv.writer(file, delimiter='¢')
-            if not file_exists:
-                writer.writerow(['Título', 'Link 1', 'Link 2', 'Descrição', 'Descrição Prazo'])
-
-            existing_data = set()
-            if file_exists:
-                with open(output_filename, mode='r', newline='', encoding='utf-8') as read_file:
-                    reader = csv.reader(read_file, delimiter='¢')
-                    existing_data = {tuple(row) for row in reader}
-
-            for edital in editais_data:
-                if tuple(edital) not in existing_data:
-                    writer.writerow(edital)
-                    existing_data.add(tuple(edital))
-
-        print(f"Dados extraídos e salvos/atualizados em '{output_filename}' com sucesso!")
+        print(f"Dados extraídos e salvos/atualizados com sucesso!")
     else:
         print(f"Falha ao acessar a página: {url}")
