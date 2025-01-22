@@ -2,11 +2,11 @@ from urllib import response
 import requests
 from pathlib import Path
 
-API_URL_EDITAIS = "http://172.30.60.58:3030/editais"
-API_URL_ASSOCIACAO = "http://172.30.60.58:3030/nucleos_editais"
-API_URL_NUCLEOS = "http://172.30.60.58:3030/nucleos/:nome"
-API_URL_PRAZOS = "http://172.30.60.58:3030/prazos"
-API_URL_EDITAIS_BUSCAR = "http://172.30.60.58:3030/editais/link"
+API_URL_EDITAIS = "***"
+API_URL_ASSOCIACAO = "***"
+API_URL_NUCLEOS = "***"
+API_URL_PRAZOS = "***"
+API_URL_EDITAIS_BUSCAR = "***"
 
 diretorio_csv = Path('csv') 
 
