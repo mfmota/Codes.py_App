@@ -72,7 +72,3 @@ A API deve estar configurada e acessível para que os scripts possam registrar e
 - O script suporta apenas editais relacionados ao ano atual e ao próximo.
 - Em caso de alterações no layout do site da UTFPR, pode ser necessário ajustar os seletores do BeautifulSoup.
 
-## Autor
-
-Este projeto foi desenvolvido por **Maria Fernanda**, estudante de Sistemas de Informação na UTFPR, com foco em automação e integração de sistemas.
-
